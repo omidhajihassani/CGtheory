@@ -1,5 +1,6 @@
 # This module gives the visualization and gameplay handler
 import numpy as np
+from solver import solver
 
 def initialize():
 	board_mesh = np.zeros((6, 7), int);
@@ -68,6 +69,8 @@ turn = 0;
 move_i = 0;
 while live:
 	# Initialization
+	slvr = solver(20, 30);
+	slvr.solve();
 	if turn == 0:
 		board_mesh = initialize()
 	# Gameplay
