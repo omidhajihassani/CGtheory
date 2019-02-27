@@ -2,6 +2,8 @@
 import numpy as np
 from solver import solver
 
+state = []
+
 def initialize():
 	board_mesh = np.zeros((6, 7), int);
 	return board_mesh
@@ -63,13 +65,16 @@ def get_position_on_board(move_j, board_mesh):
 			break
 	return move_i;
 
+def position2state(move_j, state):
+	state.append(move_j);
+
 board_mesh = None;
 live = True;
 turn = 0;
 move_i = 0;
 while live:
 	# Initialization
-	slvr = solver(20, 30);
+	slvr = solver(state);
 	slvr.solve();
 	if turn == 0:
 		board_mesh = initialize()
@@ -78,12 +83,14 @@ while live:
 		print ("turn 1")
 		move_j = get_action(turn%2, board_mesh);
 		move_i = get_position_on_board(move_j, board_mesh);
+		position2state(move_j, state);
 		board_mesh[move_i, move_j] = turn%2 + 1
 
 	else:
 		print ("turn 2")
 		move_j = get_action(turn%2, board_mesh);
 		move_i = get_position_on_board(move_j, board_mesh);
+		position2state(move_j, state);
 		board_mesh[move_i, move_j] = turn%2 + 1
 
 	# Print latest Game Position
