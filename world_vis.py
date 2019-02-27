@@ -40,7 +40,7 @@ def winning_Condition(board_mesh,player_number):
 def get_action(player_number, board_mesh):
 	move_j = int(input("Player"+str(player_number)+", Please input the column number of your move from 0 to 6   "));
 	if is_viable_action(move_j, board_mesh):
-		pass
+		position2state(move_j, state);
 	else:
 		print("NOT a Legal Move!!!")
 		move_j = get_action(player_number, board_mesh)
@@ -83,14 +83,12 @@ while live:
 		print ("turn 1")
 		move_j = get_action(turn%2, board_mesh);
 		move_i = get_position_on_board(move_j, board_mesh);
-		position2state(move_j, state);
 		board_mesh[move_i, move_j] = turn%2 + 1
 
 	else:
 		print ("turn 2")
 		move_j = get_action(turn%2, board_mesh);
 		move_i = get_position_on_board(move_j, board_mesh);
-		position2state(move_j, state);
 		board_mesh[move_i, move_j] = turn%2 + 1
 
 	# Print latest Game Position
