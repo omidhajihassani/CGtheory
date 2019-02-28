@@ -40,7 +40,7 @@ def winning_Condition(board_mesh,player_number):
 def get_action(player_number, board_mesh):
 	move_j = int(input("Player"+str(player_number)+", Please input the column number of your move from 0 to 6   "));
 	if is_viable_action(move_j, board_mesh):
-		position2state(move_j, state);
+		position2state(state, move_j);
 	else:
 		print("NOT a Legal Move!!!")
 		move_j = get_action(player_number, board_mesh)
@@ -65,7 +65,7 @@ def get_position_on_board(move_j, board_mesh):
 			break
 	return move_i;
 
-def position2state(move_j, state):
+def position2state(state, move_j):
 	state.append(move_j);
 
 board_mesh = None;
@@ -73,9 +73,8 @@ live = True;
 turn = 0;
 move_i = 0;
 while live:
+	slvr = solver();
 	# Initialization
-	slvr = solver(state);
-	slvr.solve();
 	if turn == 0:
 		board_mesh = initialize()
 	# Gameplay
@@ -84,12 +83,14 @@ while live:
 		move_j = get_action(turn%2, board_mesh);
 		move_i = get_position_on_board(move_j, board_mesh);
 		board_mesh[move_i, move_j] = turn%2 + 1
+		slvr.solve(state, board_mesh, turn%2);
 
 	else:
 		print ("turn 2")
 		move_j = get_action(turn%2, board_mesh);
 		move_i = get_position_on_board(move_j, board_mesh);
 		board_mesh[move_i, move_j] = turn%2 + 1
+		slvr.solve(state, board_mesh, turn%2);
 
 	# Print latest Game Position
 	visualize(board_mesh)
