@@ -29,6 +29,7 @@ class solver:
         pass
 
     def isTerminal(node):
+        count = 0
         for i in range(7):
             for j in range(6):
                 if node[i, j] != 0:
