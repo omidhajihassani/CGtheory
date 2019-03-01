@@ -56,7 +56,7 @@ class solver:
             for j in range(7):
                 if node[i, j] != 0:
                         count = count + 1;
-        return (count + 1 - 42)/2
+        return (42 + 1 - count)/2
 
     def get_position_on_board(self, move_j, board_mesh):
     	move_i = 0;
@@ -66,32 +66,38 @@ class solver:
     			break
     	return move_i;
 
-    def Negamax(self, node, turn):
+    def Negamax(self, node, turn, depth):
+        if depth == 0:
+            return 0
+        depth = depth - 1
+        if turn == 1:
+            nexturn = 2;
+        if turn == 2:
+            nexturn = 1;
         if self.isTerminal(node):
             return 0;
         for i in range(7):
             if self.is_viable_action(i, node):
-                print("This is available")
                 parent = np.copy(node)
                 parent[self.get_position_on_board(i, parent), i] = turn
                 child = parent
                 if self.can_win(child, turn):
+                    print(str(turn)+" has won the game")
                     self.visualize(child);
                     return self.eval_function(child)
-
         value = -42
         for i in range(7):
-            if not self.is_viable_action(i, node):
-                continue;
-            parent = node
-            parent[self.get_position_on_board(i, node), i] = turn
-            child = parent
-            val = max(value, -self.Negamax(child, (turn)%2))
-            if (val > value):
-                value = val
+            if self.is_viable_action(i, node):
+                parent = np.copy(node)
+                parent[self.get_position_on_board(i, parent), i] = turn
+                child = np.copy(parent)
+                val = max(value, -self.Negamax(child, nexturn, depth))
+                if (val > value):
+                    value = val
         return value
 
-    def solve(self, board_mesh, turn):
+    def solve(self, board_mesh, turn, depth):
         self.board_mesh = board_mesh
         self.turn = turn
-        print(self.Negamax(board_mesh, turn))
+        self.depth = depth
+        print(self.Negamax(board_mesh, turn, depth))
