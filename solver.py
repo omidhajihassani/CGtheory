@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 
 class solver:
     def __init__(self):
@@ -34,9 +34,8 @@ class solver:
             return False
 
     def is_viable_action(self, move_j, node):
-    	if (move_j >= 0 and move_j <= 6):
-    		if (node[5, move_j] == 0):
-    			return True
+    	if node[5, move_j] == 0:
+    		return True
     	else:
     		return False
 
@@ -70,15 +69,10 @@ class solver:
     def Negamax(self, node, turn):
         if self.isTerminal(node):
             return 0;
-        # for(int x = 0; x < Position::WIDTH; x++) # check if current player can win next move
-        #     if(P.canPlay(x) && P.isWinningMove(x))
-        #         return (Position::WIDTH*Position::HEIGHT+1 - P.nbMoves())/2;
         for i in range(7):
-            if not self.is_viable_action(i, node):
-                print("This is not available")
-                continue;
-            else:
-                parent = node
+            if self.is_viable_action(i, node):
+                print("This is available")
+                parent = np.copy(node)
                 parent[self.get_position_on_board(i, parent), i] = turn
                 child = parent
                 if self.can_win(child, turn):
