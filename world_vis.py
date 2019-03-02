@@ -21,7 +21,13 @@ Screen = pg.display.set_mode(Screen_Size)
 bg=pg.image.load("Board.png")
 piece1 = pg.image.load("piece1.png")
 piece2 = pg.image.load("piece2.png")
+place_holder = pg.image.load("Player_place_holder.png")
 Screen.blit(bg,(0,0))
+pg.font.init()
+font=pg.font.SysFont('Helvetica',30)
+text_player1 = font.render("Player 1",False,(0,0,0))
+text_player2 = font.render("Player 2",False,(0,0,0))
+
 ############
 
 def board_UI(board_mesh):
@@ -71,10 +77,19 @@ def get_action(player_number, board_mesh,X_position):
 	#move_j = int(input("Player"+str(player_number)+", Please input the column number of your move from 0 to 6   "));
 	move_j=int(math.floor(X_position/DiskSize))
 	if is_viable_action(move_j, board_mesh):
+		if turn%2 == 0:
+			Screen.blit(piece1,(646,450))
+			Screen.blit(place_holder,(620,403))
+			Screen.blit(text_player1,(646,410))
+		if turn%2 == 1:
+			Screen.blit(piece2,(646,450))
+			Screen.blit(place_holder,(620,403))
+			Screen.blit(text_player2,(646,410))
 		player_number = player_number+1 
-		pass
+		#pass
 	else:
 		print("NOT a Legal Move!!!")
+		player_number=player_number
 		#move_j = get_action(player_number, board_mesh,X_position)
 	return move_j,player_number;
 
@@ -114,7 +129,8 @@ while live:
 			sys.exit()
 		if event.type == pg.MOUSEBUTTONDOWN:
 			print(event.pos)
-			if event.pos[0] <= 520 :
+
+			if event.pos[0] < 500 :
 				X_position = event.pos[0]
 				# Initialization
 				if turn == -1:
