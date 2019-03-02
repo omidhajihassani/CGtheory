@@ -71,9 +71,9 @@ class solver:
             return 0
         depth = depth - 1
         if turn == 1:
-            nexturn = 2;
+            nexturn = 2
         if turn == 2:
-            nexturn = 1;
+            nexturn = 1
         if self.isTerminal(node):
             return 0;
         for i in range(7):
@@ -92,6 +92,7 @@ class solver:
                 parent[self.get_position_on_board(i, parent), i] = turn
                 child = np.copy(parent)
                 val = max(value, -self.Negamax(child, nexturn, depth))
+                print(val)
                 if (val > value):
                     value = val
         return value
