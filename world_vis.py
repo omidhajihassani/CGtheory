@@ -10,26 +10,33 @@ def initialize():
 
 ############
 pg.init()
-DiskSize=100
-Circle_rad= 35
-Screen_Width= 7*DiskSize
-Screen_Height= 7*DiskSize
+DiskSize=70
+Circle_rad= 30
+Screen_Width= 800	
+Screen_Height= 600	
+#Screen_Width= 7*DiskSize
+#Screen_Height= 7*DiskSize
 Screen_Size = (Screen_Width,Screen_Height)
 Screen = pg.display.set_mode(Screen_Size)
-
+bg=pg.image.load("Board.png")
+piece1 = pg.image.load("piece1.png")
+piece2 = pg.image.load("piece2.png")
+Screen.blit(bg,(0,0))
 ############
 
 def board_UI(board_mesh):
-	for c in range(7):
-		for r in range(6):
-			pg.draw.rect(Screen,(0,0,255),(c*DiskSize,(r+1)*DiskSize,DiskSize,DiskSize))
-			pg.draw.circle(Screen,(255,255,255),(int(c*DiskSize+DiskSize/2),int((r+1)*DiskSize+DiskSize/2)),Circle_rad)
+	# for c in range(7):
+	# 	for r in range(6):
+	# 		pg.draw.rect(Screen,(0,0,255),(c*DiskSize,(r+1)*DiskSize,DiskSize,DiskSize))
+	# 		pg.draw.circle(Screen,(255,255,255),(int(c*DiskSize+DiskSize/2),int((r+1)*DiskSize+DiskSize/2)),Circle_rad)
 	for c in range(7):
 		for r in range(6):
 			if board_mesh[r][c]== 1 :
-				pg.draw.circle(Screen,(255,0,0),(int(c*DiskSize+DiskSize/2),int(Screen_Height-(r+1)*DiskSize+DiskSize/2)),Circle_rad)
+				#pg.draw.circle(Screen,(255,0,0),(int(c*DiskSize+50),int(Screen_Height-(r+1)*DiskSize+DiskSize/2)),Circle_rad)
+				Screen.blit(piece1,(18+c*70,515-r*70))
 			elif board_mesh[r][c]== 2 :
-				pg.draw.circle(Screen,(0,255,0),(int(c*DiskSize+DiskSize/2),int(Screen_Height-(r+1)*DiskSize+DiskSize/2)),Circle_rad)
+				#pg.draw.circle(Screen,(0,255,0),(int(c*DiskSize+50),int(Screen_Height-(r+1)*DiskSize+DiskSize/2)),Circle_rad)
+				Screen.blit(piece2,(18+c*70,515-r*70))
 	pg.display.update()
 def is_viable_action(move_j, board_mesh):
 	if (move_j >= 0 and move_j <= 6):
@@ -107,24 +114,25 @@ while live:
 			sys.exit()
 		if event.type == pg.MOUSEBUTTONDOWN:
 			print(event.pos)
-			X_position = event.pos[0]
-			# Initialization
-			if turn == -1:
-				board_mesh = initialize()
-			# Gameplay
-			if turn%2 == 0:
-				print ("turn 1")
-				move_j,turn= get_action(turn%2, board_mesh,X_position);
-				move_i = get_position_on_board(move_j, board_mesh);
-				if is_viable_action(move_j, board_mesh):
-					board_mesh[move_i, move_j] = turn%2 + 1
+			if event.pos[0] <= 520 :
+				X_position = event.pos[0]
+				# Initialization
+				if turn == -1:
+					board_mesh = initialize()
+				# Gameplay
+				if turn%2 == 0:
+					print ("turn 1")
+					move_j,turn= get_action(turn%2, board_mesh,X_position);
+					move_i = get_position_on_board(move_j, board_mesh);
+					if is_viable_action(move_j, board_mesh):
+						board_mesh[move_i, move_j] = turn%2 + 1
 
-			else:
-				print ("turn 2")
-				move_j,turn = get_action(turn%2, board_mesh,X_position);
-				move_i = get_position_on_board(move_j, board_mesh);
-				if is_viable_action(move_j, board_mesh):
-					board_mesh[move_i, move_j] = turn%2 + 1
+				else:
+					print ("turn 2")
+					move_j,turn = get_action(turn%2, board_mesh,X_position);
+					move_i = get_position_on_board(move_j, board_mesh);
+					if is_viable_action(move_j, board_mesh):
+						board_mesh[move_i, move_j] = turn%2 + 1
 
 			# Print latest Game Position
 			visualize(board_mesh)
