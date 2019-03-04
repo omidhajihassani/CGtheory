@@ -4,6 +4,7 @@ class solver:
     def __init__(self):
         pass
 
+
     def can_win(self, board_mesh,player_number):
     	for columns in range(0,4):
     		for rows in range (0,6):
@@ -67,6 +68,7 @@ class solver:
     	return move_i;
 
     def Negamax(self, node, turn, depth):
+
         if depth == 0:
             return 0
         depth = depth - 1
@@ -76,23 +78,36 @@ class solver:
             nexturn = 1
         if self.isTerminal(node):
             return 0;
+
         for i in range(7):
             if self.is_viable_action(i, node):
                 parent = np.copy(node)
                 parent[self.get_position_on_board(i, parent), i] = turn
                 child = parent
                 if self.can_win(child, turn):
+                    print("%%%%%%%%%%%%%%%%%%%%%%%%%")
+                    print("depth is "+str(depth))
+                    print("%%%%%%%%%%%%%%%%%%%%%%%%%")
                     print(str(turn)+" has won the game")
                     self.visualize(child);
+                    print()
+                    print(self.eval_function(child))
                     return self.eval_function(child)
         value = -42
+
         for i in range(7):
             if self.is_viable_action(i, node):
+                print("%%%%%%%%%%%%%%%%%%%%%%%%%")
+                print("depth is "+str(depth))
+                print("%%%%%%%%%%%%%%%%%%%%%%%%%")
                 parent = np.copy(node)
                 parent[self.get_position_on_board(i, parent), i] = turn
                 child = np.copy(parent)
-                val = max(value, -self.Negamax(child, nexturn, depth))
-                print(val)
+                self.visualize(child)
+                print()
+                valv = -self.Negamax(child, nexturn, depth)
+                print (valv)
+                val = max(value, valv)
                 if (val > value):
                     value = val
         return value
