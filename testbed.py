@@ -31,7 +31,7 @@ def can_win(board_mesh,player_number):
 f = open("Test_L3_R1.txt", "r")
 
 def state2mesh():
-    for i in range(1):
+    for i in range(2):
         entry = f.readline()
     # entry = f.readline()
     # print(entry)
@@ -73,9 +73,9 @@ board_mesh = np.zeros((6,7), int)
 #                 [0, 0, 0, 0, 0, 0, 0]])
 board_mesh = state2mesh();
 visualize(board_mesh)
-board_mesh[1, 6] = 0
-board_mesh[2, 5] = 1
-board_mesh[2, 4] = 1
+# board_mesh[1, 6] = 0
+# board_mesh[2, 5] = 1
+# board_mesh[2, 4] = 1
 
 # board_mesh[3, 6] = 2
 

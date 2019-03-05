@@ -71,7 +71,6 @@ class solver:
 
         if depth == 0:
             return 0
-        depth = depth - 1
         if turn == 1:
             nexturn = 2
         if turn == 2:
@@ -105,7 +104,7 @@ class solver:
                 child = np.copy(parent)
                 self.visualize(child)
                 print()
-                valv = -self.Negamax(child, nexturn, depth)
+                valv = -self.Negamax(child, nexturn, depth - 1)
                 print (valv)
                 val = max(value, valv)
                 if (val > value):
