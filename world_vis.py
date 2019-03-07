@@ -4,10 +4,6 @@ import pygame as pg
 import sys
 import UI 
 import math
-from solver import solver
-
-state = []
-
 def initialize():
 	board_mesh = np.zeros((6, 7), int);
 	return board_mesh
@@ -91,7 +87,6 @@ def get_action(player_number, board_mesh,X_position):
 			Screen.blit(text_player2,(646,410))
 		player_number = player_number+1 
 		#pass
-		position2state(state, move_j);
 	else:
 		print("NOT a Legal Move!!!")
 		player_number=player_number
@@ -118,10 +113,6 @@ def get_position_on_board(move_j, board_mesh):
 	return move_i;
 
 board_mesh = initialize();
-def position2state(state, move_j):
-	state.append(move_j);
-
-board_mesh = None;
 live = True;
 turn = -1;
 move_i = 0;
