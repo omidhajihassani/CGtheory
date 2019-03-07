@@ -1,9 +1,9 @@
 import numpy as np
-
+countr = 0
 class solver:
+
     def __init__(self):
         pass
-
 
     def can_win(self, board_mesh,player_number):
     	for columns in range(0,4):
@@ -68,6 +68,8 @@ class solver:
     	return move_i;
 
     def Negamax(self, node, turn, depth):
+        global countr
+        countr = countr + 1
 
         if depth == 0:
             return 0
@@ -84,35 +86,94 @@ class solver:
                 parent[self.get_position_on_board(i, parent), i] = turn
                 child = parent
                 if self.can_win(child, turn):
-                    print("%%%%%%%%%%%%%%%%%%%%%%%%%")
-                    print("depth is "+str(depth))
-                    print("%%%%%%%%%%%%%%%%%%%%%%%%%")
-                    print(str(turn)+" has won the game")
-                    self.visualize(child);
-                    print()
-                    print(self.eval_function(child))
+                    # print("%%%%%%%%%%%%%%%%%%%%%%%%%")
+                    # print("depth is "+str(depth))
+                    # print("%%%%%%%%%%%%%%%%%%%%%%%%%")
+                    # print(str(turn)+" has won the game")
+                    # self.visualize(child);
+                    # print()
+                    # print(self.eval_function(child))
                     return self.eval_function(child)
         value = -42
 
         for i in range(7):
             if self.is_viable_action(i, node):
-                print("%%%%%%%%%%%%%%%%%%%%%%%%%")
-                print("depth is "+str(depth))
-                print("%%%%%%%%%%%%%%%%%%%%%%%%%")
+                # print("%%%%%%%%%%%%%%%%%%%%%%%%%")
+                # print("depth is "+str(depth))
+                # print("%%%%%%%%%%%%%%%%%%%%%%%%%")
                 parent = np.copy(node)
                 parent[self.get_position_on_board(i, parent), i] = turn
                 child = np.copy(parent)
-                self.visualize(child)
-                print()
+                # self.visualize(child)
+                # print()
                 valv = -self.Negamax(child, nexturn, depth - 1)
-                print (valv)
+                # print (valv)
                 val = max(value, valv)
                 if (val > value):
                     value = val
         return value
 
+    def Negamax_wab(self, node, turn, depth, alpha, beta):
+        global countr
+        countr = countr + 1
+        if alpha > beta:
+            return False
+        if depth == 0:
+            return 0
+        if turn == 1:
+            nexturn = 2
+        if turn == 2:
+            nexturn = 1
+        if self.isTerminal(node):
+            return 0;
+
+        for i in range(7):
+            if self.is_viable_action(i, node):
+                parent = np.copy(node)
+                parent[self.get_position_on_board(i, parent), i] = turn
+                child = parent
+                if self.can_win(child, turn):
+                    # print("%%%%%%%%%%%%%%%%%%%%%%%%%")
+                    # print("depth is "+str(depth))
+                    # print("%%%%%%%%%%%%%%%%%%%%%%%%%")
+                    # print(str(turn)+" has won the game")
+                    # self.visualize(child);
+                    # print()
+                    # print(self.eval_function(child))
+                    return self.eval_function(child)
+
+        max = self.eval_function(child)
+        if beta > max:
+            beta = max;                     # there is no need to keep beta above our max possible score.
+        if alpha >= beta:
+            return beta;                    # prune the exploration if the [alpha;beta] window is empty.
+
+        for i in range(7):
+            if self.is_viable_action(i, node):
+                # print("%%%%%%%%%%%%%%%%%%%%%%%%%")
+                # print("depth is "+str(depth))
+                # print("%%%%%%%%%%%%%%%%%%%%%%%%%")
+                parent = np.copy(node)
+                parent[self.get_position_on_board(i, parent), i] = turn
+                child = np.copy(parent)
+                # self.visualize(child)
+                # print()
+                score = -self.Negamax_wab(child, nexturn, depth - 1, -beta, -alpha)
+                if score >= beta:
+                    return score
+                if score > alpha:
+                    alpha = score
+        return alpha
+
     def solve(self, board_mesh, turn, depth):
+
+        global countr
         self.board_mesh = board_mesh
         self.turn = turn
         self.depth = depth
         print(self.Negamax(board_mesh, turn, depth))
+        # print("HIIII")
+        print("Negamax: "+str(countr))
+        countr = 0
+        print(self.Negamax_wab(board_mesh, turn, depth, -12, 12))
+        print("Negamax w alpha beta pruning: "+str(countr))
