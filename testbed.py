@@ -1,5 +1,10 @@
 import numpy as np
 from solver import solver
+import time
+start = time.time()
+"the code you want to test stays here"
+
+# Print(columnOrder)
 
 def get_position_on_board(move_j, board_mesh):
     move_i = 0;
@@ -31,7 +36,7 @@ def can_win(board_mesh,player_number):
 f = open("Test_L3_R1.txt", "r")
 
 def state2mesh():
-    for i in range(32):
+    for i in range(1):
         entry = f.readline()
     # entry = f.readline()
     # print(entry)
@@ -65,26 +70,38 @@ def visualize(board_mesh):
 
 board_mesh = np.zeros((6,7), int)
 
-# board_mesh = np.array([[1, 1, 1, 2, 2, 2, 0],
-#                 [1, 1, 1, 0, 0, 0, 0],
+# board_mesh = np.array([[1, 1, 1, 2, 2, 0, 0],
+#                 [1, 1, 0, 0, 0, 0, 0],
 #                 [1, 0, 0, 0, 0, 0, 0],
 #                 [0, 0, 0, 0, 0, 0, 0],
 #                 [0, 0, 0, 0, 0, 0, 0],
 #                 [0, 0, 0, 0, 0, 0, 0]])
 board_mesh = state2mesh();
+for i in range(6):
+    for j in range(7):
+        if board_mesh[i, j] == 0:
+            break
+        if board_mesh[i, j] == 1:
+            board_mesh[i, j] = 2
+        else:
+            board_mesh[i, j] = 1
+
+
 visualize(board_mesh)
 # board_mesh[1, 6] = 0
 # board_mesh[2, 5] = 1
 # board_mesh[2, 4] = 1
-
-# board_mesh[3, 6] = 2
+board_mesh[5, 5] = 2
 
 print("")
+# board_mesh = np.zeros((6, 7), int)
 visualize(board_mesh)
 #
 # print(can_win(board_mesh, 2))
 # print(can_win(board_mesh, 1))
 # print("")
-
+print(start)
 slvr = solver()
 slvr.solve(board_mesh, 1, 7)
+end = time.time()
+print(end - start)
