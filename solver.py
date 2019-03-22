@@ -182,8 +182,8 @@ class solver:
         self.board_mesh = board_mesh
         self.turn = turn
         self.depth = depth
-        # print(self.Negamax(board_mesh, turn, depth))
-        # print("HIIII")
+        print(self.Negamax(board_mesh, turn, depth))
+        print("HIIII")
         print("Negamax: "+str(countr))
         countr = 0
         print(self.Negamax_wab(board_mesh, turn, depth, -12, 12))
