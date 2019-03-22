@@ -5,7 +5,7 @@ import sys
 import UI 
 import math
 def initialize():
-	board_mesh = np.zeros((6, 7), int);
+	board_mesh = np.zeros((6, 7), int)
 	return board_mesh
 
 ############
@@ -22,6 +22,8 @@ bg=pg.image.load("Board.png")
 piece1 = pg.image.load("piece1.png")
 piece2 = pg.image.load("piece2.png")
 place_holder = pg.image.load("Player_place_holder.png")
+Player1Wins=pg.image.load("Player1Wins.png")
+Player2Wins=pg.image.load("Player2Wins.png")
 Screen.blit(bg,(0,0))
 pg.font.init()
 font=pg.font.SysFont('Helvetica',30)
@@ -91,31 +93,57 @@ def get_action(player_number, board_mesh,X_position):
 		print("NOT a Legal Move!!!")
 		player_number=player_number
 		#move_j = get_action(player_number, board_mesh,X_position)
-	return move_j,player_number;
+	return move_j,player_number
 
 def visualize(board_mesh):
-	i = 5;
-	j = 0;
+	i = 5
+	j = 0
 	while i != -1:
 		while j != 7:
-			print(str(board_mesh[i, j]), end = ' ', flush=True);
-			j = j + 1;
+			print(str(board_mesh[i, j]), end = ' ', flush=True)
+			j = j + 1
 		print("")
-		i = i - 1;
-		j = 0;
+		i = i - 1
+		j = 0
 
 def get_position_on_board(move_j, board_mesh):
-	move_i = 0;
+	move_i = 0
 	for i in range(6):
 		if (board_mesh[i, move_j] == 0):
 			move_i = i
 			break
-	return move_i;
+	return move_i
 
-board_mesh = initialize();
-live = True;
-turn = -1;
-move_i = 0;
+def res_Or_quit(restart):
+	while not restart:
+		for event in pg.event.get():
+			if event.type == pg.QUIT:
+				sys.exit()
+			if event.type == pg.MOUSEBUTTONDOWN:
+				print(event.pos[0])
+				print(event.pos[1])
+				if ((event.pos[0]>=137 and event.pos[0]<=137+239) and ( event.pos[1]>=303 and event.pos[1]<=141+303)):
+					print("Quit")
+					sys.exit()
+				if ((event.pos[0]>=422 and event.pos[0]<=422+249) and ( event.pos[1]>=139 and event.pos[1]<=139+303)):
+					print("restart")
+					restart = True
+					board_mesh = initialize()
+					board_UI(board_mesh)
+					Screen.blit(bg,(0,0))
+					pg.display.update()
+					turn = -1
+	return board_mesh
+					
+
+					
+
+
+board_mesh = initialize()
+live = True
+restart = False
+turn = -1
+move_i = 0
 
 
 board_UI(board_mesh)
@@ -124,6 +152,12 @@ pg.display.update()
 
 
 while live:
+	if turn == -1:
+		board_mesh = initialize()
+		Screen.blit(piece1,(646,450))
+		Screen.blit(place_holder,(620,403))
+		Screen.blit(text_player1,(646,410))
+		pg.display.update()
 	for event in pg.event.get():
 		if event.type == pg.QUIT:
 			sys.exit()
@@ -135,18 +169,23 @@ while live:
 				# Initialization
 				if turn == -1:
 					board_mesh = initialize()
+					Screen.blit(piece1,(646,450))
+					Screen.blit(place_holder,(620,403))
+					Screen.blit(text_player1,(646,410))
+					pg.display.update()
+
 				# Gameplay
 				if turn%2 == 0:
 					print ("turn 1")
-					move_j,turn= get_action(turn%2, board_mesh,X_position);
-					move_i = get_position_on_board(move_j, board_mesh);
+					move_j,turn= get_action(turn%2, board_mesh,X_position)
+					move_i = get_position_on_board(move_j, board_mesh)
 					if is_viable_action(move_j, board_mesh):
 						board_mesh[move_i, move_j] = turn%2 + 1
 
 				else:
 					print ("turn 2")
-					move_j,turn = get_action(turn%2, board_mesh,X_position);
-					move_i = get_position_on_board(move_j, board_mesh);
+					move_j,turn = get_action(turn%2, board_mesh,X_position)
+					move_i = get_position_on_board(move_j, board_mesh)
 					if is_viable_action(move_j, board_mesh):
 						board_mesh[move_i, move_j] = turn%2 + 1
 
@@ -154,16 +193,23 @@ while live:
 			visualize(board_mesh)
 			board_UI(board_mesh)
 			if winning_Condition(board_mesh,1):
-				print("Player 1 Won the Game !")
+				print("Player 1 Wins !")
 				print("Game Over!!")
-				live = False
+				Screen.blit(Player1Wins,(0,0))
+				pg.display.update()
+				board_mesh=res_Or_quit(restart)
+				
+				
 			if winning_Condition(board_mesh,2):
-				print("Player 2 Won the Game !")
+				print("Player 2 Wins !")
 				print("Game Over!!")
-				live = False
+				Screen.blit(Player2Wins,(0,0))
+				pg.display.update()
+				board_mesh=res_Or_quit(restart)
+
 			#turn = turn + 1;
 
 			# Check end of Game Conditions
 			if turn == 6*7:
-				print ("Game OVER!");
+				print ("Game OVER!")
 				live = False
