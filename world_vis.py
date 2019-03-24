@@ -2,8 +2,9 @@
 import numpy as np
 import pygame as pg
 import sys
-import UI 
+import os
 import math
+import Greedy
 def initialize():
 	board_mesh = np.zeros((6, 7), int)
 	return board_mesh
@@ -14,8 +15,6 @@ DiskSize=70
 Circle_rad= 30
 Screen_Width= 800	
 Screen_Height= 600	
-#Screen_Width= 7*DiskSize
-#Screen_Height= 7*DiskSize
 Screen_Size = (Screen_Width,Screen_Height)
 Screen = pg.display.set_mode(Screen_Size)
 bg=pg.image.load("Board.png")
@@ -29,7 +28,9 @@ pg.font.init()
 font=pg.font.SysFont('Helvetica',30)
 text_player1 = font.render("Player 1",False,(0,0,0))
 text_player2 = font.render("Player 2",False,(0,0,0))
-
+###########################
+player1_mode = "manual"
+player2_mode = "greedy"
 ############
 
 def board_UI(board_mesh):
@@ -93,6 +94,27 @@ def get_action(player_number, board_mesh,X_position):
 		print("NOT a Legal Move!!!")
 		player_number=player_number
 		#move_j = get_action(player_number, board_mesh,X_position)
+	pg.display.update()
+	return move_j,player_number
+
+def Random_Action(player_number, board_mesh):
+	#move_j = int(input("Player"+str(player_number)+", Please input the column number of your move from 0 to 6   "));
+	move_j=(np.random.randint(7,size=1))
+	if is_viable_action(move_j, board_mesh):
+		if turn%2 == 0:
+			Screen.blit(piece1,(646,450))
+			Screen.blit(place_holder,(620,403))
+			Screen.blit(text_player1,(646,410))
+		if turn%2 == 1:
+			Screen.blit(piece2,(646,450))
+			Screen.blit(place_holder,(620,403))
+			Screen.blit(text_player2,(646,410))
+		player_number = player_number+1 
+		#pass
+	else:
+		print("NOT a Legal Move!!!")
+		player_number=player_number
+		#move_j = get_action(player_number, board_mesh,X_position)
 	return move_j,player_number
 
 def visualize(board_mesh):
@@ -119,12 +141,14 @@ def res_Or_quit(restart):
 		for event in pg.event.get():
 			if event.type == pg.QUIT:
 				sys.exit()
+				#os._exit(0)
 			if event.type == pg.MOUSEBUTTONDOWN:
 				print(event.pos[0])
 				print(event.pos[1])
 				if ((event.pos[0]>=137 and event.pos[0]<=137+239) and ( event.pos[1]>=303 and event.pos[1]<=141+303)):
 					print("Quit")
-					sys.exit()
+					#sys.exit()
+					os._exit(0)
 				if ((event.pos[0]>=422 and event.pos[0]<=422+249) and ( event.pos[1]>=139 and event.pos[1]<=139+303)):
 					print("restart")
 					restart = True
@@ -133,10 +157,9 @@ def res_Or_quit(restart):
 					Screen.blit(bg,(0,0))
 					pg.display.update()
 					turn = -1
-	return board_mesh
-					
+	return board_mesh,turn
 
-					
+				
 
 
 board_mesh = initialize()
@@ -157,14 +180,21 @@ while live:
 		Screen.blit(piece1,(646,450))
 		Screen.blit(place_holder,(620,403))
 		Screen.blit(text_player1,(646,410))
+		turn = 1
 		pg.display.update()
+
 	for event in pg.event.get():
 		if event.type == pg.QUIT:
-			sys.exit()
+			live = False
+			pg.display.quit()
+			pg.quit()
+			#sys.exit()
+			os._exit
 		if event.type == pg.MOUSEBUTTONDOWN:
 			print(event.pos)
 
 			if event.pos[0] < 500 :
+				print("Turn is : ",turn)
 				X_position = event.pos[0]
 				# Initialization
 				if turn == -1:
@@ -173,22 +203,39 @@ while live:
 					Screen.blit(place_holder,(620,403))
 					Screen.blit(text_player1,(646,410))
 					pg.display.update()
-
-				# Gameplay
-				if turn%2 == 0:
-					print ("turn 1")
-					move_j,turn= get_action(turn%2, board_mesh,X_position)
-					move_i = get_position_on_board(move_j, board_mesh)
-					if is_viable_action(move_j, board_mesh):
-						board_mesh[move_i, move_j] = turn%2 + 1
-
+					turn = 0
 				else:
-					print ("turn 2")
-					move_j,turn = get_action(turn%2, board_mesh,X_position)
+					pass
+				# Gameplay
+				if turn%2 == 1:
+					print ("turn 1")
+					if player1_mode =="manual":
+						move_j,turn= get_action(turn%2, board_mesh,X_position)
+					elif player1_mode =="random":
+						move_j,turn= Random_Action(turn%2,board_mesh)
+					elif player1_mode =="greedy":
+						move_j,turn = Greedy.greedy_search(board_mesh,turn%2,get_position_on_board,Greedy.greedy_score,is_viable_action)
 					move_i = get_position_on_board(move_j, board_mesh)
 					if is_viable_action(move_j, board_mesh):
 						board_mesh[move_i, move_j] = turn%2 + 1
+						Screen.blit(piece2,(646,450))
+						Screen.blit(place_holder,(620,403))
+						Screen.blit(text_player2,(646,410))		
 
+				elif turn%2==0 :
+					print ("turn 2")
+					if player2_mode =="manual":
+						move_j,turn= get_action(turn%2, board_mesh,X_position)
+					elif player2_mode =="random":
+						move_j,turn= Random_Action(turn%2,board_mesh)
+					elif player2_mode =="greedy":
+						move_j,turn = Greedy.greedy_search(board_mesh,turn%2,get_position_on_board,Greedy.greedy_score,is_viable_action)
+					move_i = get_position_on_board(move_j, board_mesh)
+					if is_viable_action(move_j, board_mesh):
+						board_mesh[move_i, move_j] = turn%2 +1
+						Screen.blit(piece1,(646,450))
+						Screen.blit(place_holder,(620,403))
+						Screen.blit(text_player1,(646,410))	
 			# Print latest Game Position
 			visualize(board_mesh)
 			board_UI(board_mesh)
@@ -197,7 +244,7 @@ while live:
 				print("Game Over!!")
 				Screen.blit(Player1Wins,(0,0))
 				pg.display.update()
-				board_mesh=res_Or_quit(restart)
+				board_mesh,turn=res_Or_quit(restart)
 				
 				
 			if winning_Condition(board_mesh,2):
@@ -205,7 +252,7 @@ while live:
 				print("Game Over!!")
 				Screen.blit(Player2Wins,(0,0))
 				pg.display.update()
-				board_mesh=res_Or_quit(restart)
+				board_mesh,turn=res_Or_quit(restart)
 
 			#turn = turn + 1;
 
