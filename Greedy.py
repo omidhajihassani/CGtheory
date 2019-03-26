@@ -118,21 +118,23 @@ def greedy_search(board_mesh,player_number,get_position_on_board,greedy_score,is
             #board_mesh_new[move_row][i]=0
             column_score[i]=score
     print(column_score)
-    Greedy_index = np.argmax(column_score)
+    occurences = np.argwhere(column_score == np.amax(column_score))
+    all_values = occurences.flatten().tolist()
+    Greedy_index = np.random.choice(all_values)
     print("Max Value is : ",Greedy_index)
-    return Greedy_index , turn
+    return Greedy_index,turn
 
-# A= np.zeros((6,7))
-# A[0][0]=0
-# A[1][0]=0
-# A[2][0]=0
-# A[3][0]=0
-# A[4][0]=0
-# A[5][0]=0
+A= np.zeros((6,7))
+A[0][0]=0
+A[1][0]=0
+A[2][0]=0
+A[3][0]=0
+A[4][0]=0
+A[5][0]=0
 
-# A[0][1]=0
-# A[0][2]=0
-# A[0][3]=1
-# Score = greedy_score(A,1)
-# print("Score is : " ,Score)
-# greedy_search(A,1,get_position_on_board,greedy_score,is_viable_action)
+A[0][1]=0
+A[0][2]=0
+A[0][3]=1
+Score = greedy_score(A,1)
+print("Score is : " ,Score)
+greedy_search(A,1,get_position_on_board,greedy_score,is_viable_action)
