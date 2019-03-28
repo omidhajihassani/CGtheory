@@ -98,7 +98,9 @@ def greedy_search(board_mesh,player_number,get_position_on_board,greedy_score,is
     #player_number=player_number+1
     if player_number== 1: player_number = 1
     elif player_number==0 : player_number = 2
-    column_score = [0,0,0,0,0,0,0]
+    column_score_player = [0,0,0,0,0,0,0]
+    column_score_other = [0,0,0,0,0,0,0]
+   
     board_mesh_new = board_mesh
     for i in range(0,7):
         board_mesh_new = np.zeros((6,7))
@@ -109,32 +111,54 @@ def greedy_search(board_mesh,player_number,get_position_on_board,greedy_score,is
             print("Number of Stones for Column ( %c )",i)
             score= greedy_score(board_mesh_new,player_number)
             board_mesh_new[move_row][i]=0
-            column_score[i]=score
+            column_score_player[i]=score
             turn=player_number%2+1
 
         else:
             #board_mesh_new[move_row][i]=player_number
             score= greedy_score(board_mesh_new,player_number)
             #board_mesh_new[move_row][i]=0
-            column_score[i]=score
-    print(column_score)
-    occurences = np.argwhere(column_score == np.amax(column_score))
+            column_score_player[i]=score
+
+
+    for i in range(0,7):
+        board_mesh_new = np.zeros((6,7))
+        board_mesh_new = board_mesh
+        move_row = get_position_on_board(i,board_mesh)
+        if is_viable_action(i,board_mesh_new) :
+            board_mesh_new[move_row][i]=player_number%2+1
+            print("Number of Stones for Column ( %c )",i)
+            score= greedy_score(board_mesh_new,player_number%2+1)
+            board_mesh_new[move_row][i]=0
+            column_score_other[i]=score
+            turn=player_number%2+1
+
+        else:
+            #board_mesh_new[move_row][i]=player_number
+            score= greedy_score(board_mesh_new,player_number%2+1)
+            #board_mesh_new[move_row][i]=0
+            column_score_other[i]=score
+    #print(board_mesh)
+    print(column_score_player)
+    print(column_score_other)
+    all_values_score = column_score_player +column_score_other 
+    occurences = np.argwhere(all_values_score == np.amax(all_values_score))
     all_values = occurences.flatten().tolist()
-    Greedy_index = np.random.choice(all_values)
+    Greedy_index = np.random.choice(all_values)%7
     print("Max Value is : ",Greedy_index)
     return Greedy_index,turn
 
-A= np.zeros((6,7))
-A[0][0]=0
-A[1][0]=0
-A[2][0]=0
-A[3][0]=0
-A[4][0]=0
-A[5][0]=0
+# A= np.zeros((6,7))
+# A[0][0]=0
+# A[1][0]=0
+# A[2][0]=0
+# A[3][0]=0
+# A[4][0]=0
+# A[5][0]=0
 
-A[0][1]=0
-A[0][2]=0
-A[0][3]=1
-Score = greedy_score(A,1)
-print("Score is : " ,Score)
-greedy_search(A,1,get_position_on_board,greedy_score,is_viable_action)
+# A[0][1]=0
+# A[0][2]=0
+# A[0][3]=0
+# Score = greedy_score(A,1)
+# print("Score is : " ,Score)
+# greedy_search(A,1,get_position_on_board,greedy_score,is_viable_action)

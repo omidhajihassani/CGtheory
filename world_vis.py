@@ -5,6 +5,7 @@ import sys
 import os
 import math
 import Greedy
+import time
 def initialize():
 	board_mesh = np.zeros((6, 7), int)
 	return board_mesh
@@ -18,19 +19,21 @@ Screen_Height= 600
 Screen_Size = (Screen_Width,Screen_Height)
 Screen = pg.display.set_mode(Screen_Size)
 bg=pg.image.load("Board.png")
+pg.display.set_caption('Connect Four Game')
 piece1 = pg.image.load("piece1.png")
 piece2 = pg.image.load("piece2.png")
 place_holder = pg.image.load("Player_place_holder.png")
 Player1Wins=pg.image.load("Player1Wins.png")
 Player2Wins=pg.image.load("Player2Wins.png")
+Draw=pg.image.load("Drawww.png")
 Screen.blit(bg,(0,0))
 pg.font.init()
 font=pg.font.SysFont('Helvetica',30)
 text_player1 = font.render("Player 1",False,(0,0,0))
 text_player2 = font.render("Player 2",False,(0,0,0))
 ###########################
-player1_mode = "manual"
-player2_mode = "greedy"
+player1_mode = "greedy"
+player2_mode = "manual"
 ############
 
 def board_UI(board_mesh):
@@ -46,7 +49,7 @@ def board_UI(board_mesh):
 			elif board_mesh[r][c]== 2 :
 				#pg.draw.circle(Screen,(0,255,0),(int(c*DiskSize+50),int(Screen_Height-(r+1)*DiskSize+DiskSize/2)),Circle_rad)
 				Screen.blit(piece2,(18+c*70,515-r*70))
-	pg.display.update()
+	#pg.display.update()
 def is_viable_action(move_j, board_mesh):
 	if (move_j >= 0 and move_j <= 6):
 		if (board_mesh[5][move_j] == 0):
@@ -157,6 +160,8 @@ def res_Or_quit(restart):
 					Screen.blit(bg,(0,0))
 					pg.display.update()
 					turn = -1
+			else:
+				pass
 	return board_mesh,turn
 
 				
@@ -167,14 +172,15 @@ live = True
 restart = False
 turn = -1
 move_i = 0
-
+player = True
 
 board_UI(board_mesh)
-pg.display.update()
+pg.display.flip()
 
 
 
 while live:
+
 	if turn == -1:
 		board_mesh = initialize()
 		Screen.blit(piece1,(646,450))
@@ -190,73 +196,131 @@ while live:
 			pg.quit()
 			#sys.exit()
 			os._exit
-		if event.type == pg.MOUSEBUTTONDOWN:
-			print(event.pos)
+		#if event.type == pg.MOUSEBUTTONDOWN:
+			# print(event.pos)
 
-			if event.pos[0] < 500 :
-				print("Turn is : ",turn)
-				X_position = event.pos[0]
-				# Initialization
-				if turn == -1:
-					board_mesh = initialize()
-					Screen.blit(piece1,(646,450))
-					Screen.blit(place_holder,(620,403))
-					Screen.blit(text_player1,(646,410))
-					pg.display.update()
-					turn = 0
-				else:
-					pass
-				# Gameplay
-				if turn%2 == 1:
-					print ("turn 1")
-					if player1_mode =="manual":
-						move_j,turn= get_action(turn%2, board_mesh,X_position)
-					elif player1_mode =="random":
-						move_j,turn= Random_Action(turn%2,board_mesh)
-					elif player1_mode =="greedy":
-						move_j,turn = Greedy.greedy_search(board_mesh,turn%2,get_position_on_board,Greedy.greedy_score,is_viable_action)
-					move_i = get_position_on_board(move_j, board_mesh)
-					if is_viable_action(move_j, board_mesh):
-						board_mesh[move_i, move_j] = turn%2 + 1
-						Screen.blit(piece2,(646,450))
-						Screen.blit(place_holder,(620,403))
-						Screen.blit(text_player2,(646,410))		
-
-				elif turn%2==0 :
-					print ("turn 2")
-					if player2_mode =="manual":
-						move_j,turn= get_action(turn%2, board_mesh,X_position)
-					elif player2_mode =="random":
-						move_j,turn= Random_Action(turn%2,board_mesh)
-					elif player2_mode =="greedy":
-						move_j,turn = Greedy.greedy_search(board_mesh,turn%2,get_position_on_board,Greedy.greedy_score,is_viable_action)
-					move_i = get_position_on_board(move_j, board_mesh)
-					if is_viable_action(move_j, board_mesh):
-						board_mesh[move_i, move_j] = turn%2 +1
-						Screen.blit(piece1,(646,450))
-						Screen.blit(place_holder,(620,403))
-						Screen.blit(text_player1,(646,410))	
-			# Print latest Game Position
-			visualize(board_mesh)
+			# if event.pos[0] < 500 :
+			# 	print("Turn is : ",turn)
+			# 	X_position = event.pos[0]
+			# 	# Initialization
+	# if turn == -1:
+	# 	board_mesh = initialize()
+	# 	Screen.blit(piece1,(646,450))
+	# 	Screen.blit(place_holder,(620,403))
+	# 	Screen.blit(text_player1,(646,410))
+	# 	pg.display.update()
+	# 	turn = 1
+	# else:
+	# 	pass
+	# 		# Gameplay
+	if turn%2 == 1:
+		print ("turn 1")
+		if player1_mode =="manual":
+			while player :
+				for event in pg.event.get():
+					if event.type == pg.QUIT:
+						sys.exit()
+				#os._exit(0)
+					if event.type == pg.MOUSEBUTTONDOWN:
+						if event.pos[0] < 500 :
+							print("Turn is : ",turn)
+							X_position = event.pos[0]
+							move_j,turn= get_action(turn%2, board_mesh,X_position)
+							player = False
+			player = True
+		elif player1_mode =="random":
+			move_j,turn= Random_Action(turn%2,board_mesh)
+			#time.sleep(1)
+		elif player1_mode =="greedy":
+			move_j,turn = Greedy.greedy_search(board_mesh,turn%2,get_position_on_board,Greedy.greedy_score,is_viable_action)
+			#time.sleep(1)
+		move_i = get_position_on_board(move_j, board_mesh)
+		if is_viable_action(move_j, board_mesh):
+			board_mesh[move_i, move_j] = turn%2 + 1
 			board_UI(board_mesh)
-			if winning_Condition(board_mesh,1):
-				print("Player 1 Wins !")
-				print("Game Over!!")
-				Screen.blit(Player1Wins,(0,0))
-				pg.display.update()
-				board_mesh,turn=res_Or_quit(restart)
-				
-				
-			if winning_Condition(board_mesh,2):
-				print("Player 2 Wins !")
-				print("Game Over!!")
-				Screen.blit(Player2Wins,(0,0))
-				pg.display.update()
-				board_mesh,turn=res_Or_quit(restart)
+			pg.display.update()
+			Screen.blit(piece2,(646,450))
+			Screen.blit(place_holder,(620,403))
+			Screen.blit(text_player2,(646,410))		
+			pg.display.flip()
+			visualize(board_mesh)
 
-			#turn = turn + 1;
 
-			# Check end of Game Conditions
-			if turn == 6*7:
-				print ("Game OVER!")
-				live = False
+	elif turn%2==0 :
+		print ("turn 2")
+		if player2_mode =="manual":
+			while player :
+				for event in pg.event.get():
+					if event.type == pg.QUIT:
+						sys.exit()
+					if event.type == pg.MOUSEBUTTONDOWN:
+						if event.pos[0] < 500 :
+							print("Turn is : ",turn)
+							X_position = event.pos[0]
+							move_j,turn= get_action(turn%2, board_mesh,X_position)
+							player = False
+			player = True
+		elif player2_mode =="random":
+			move_j,turn= Random_Action(turn%2,board_mesh)
+			#time.sleep(1)
+		elif player2_mode =="greedy":
+			move_j,turn = Greedy.greedy_search(board_mesh,turn%2,get_position_on_board,Greedy.greedy_score,is_viable_action)
+			#time.sleep(1)
+		move_i = get_position_on_board(move_j, board_mesh)
+		if is_viable_action(move_j, board_mesh):
+			board_mesh[move_i, move_j] = turn%2 +1
+			board_UI(board_mesh)
+			pg.display.update()
+			Screen.blit(piece1,(646,450))
+			Screen.blit(place_holder,(620,403))
+			Screen.blit(text_player1,(646,410))	
+			board_UI(board_mesh)
+			pg.display.update()
+			pg.display.flip()
+			visualize(board_mesh)
+		#board_UI(board_mesh)
+		# Print latest Game Position
+
+	else :
+		board_UI(board_mesh)
+		pg.display.flip()
+	pg.display.flip()
+	if winning_Condition(board_mesh,1):
+		turn = -2
+		board_UI(board_mesh)
+		pg.display.update()
+		pg.display.flip()
+		print("Player 1 Wins !")
+		print("Game Over!!")
+		visualize(board_mesh)
+		pg.display.update()
+		#time.sleep(5)
+		Screen.blit(Player1Wins,(0,0))
+		pg.display.update()
+		#live = False
+		board_mesh,turn=res_Or_quit(restart)	
+	if winning_Condition(board_mesh,2):
+		turn = -2
+		board_UI(board_mesh)
+		pg.display.update()
+		pg.display.flip()
+		print("Player 2 Wins !")
+		print("Game Over!!")
+		visualize(board_mesh)
+		pg.display.update()
+		#time.sleep(5)
+		#live= False
+		Screen.blit(Player2Wins,(0,0))
+		pg.display.update()
+		board_mesh,turn=res_Or_quit(restart)
+
+	#turn = turn + 1;
+
+	# Check end of Game Conditions
+	if 0 not in board_mesh:
+		print ("Game OVER!")
+		#live = False
+		Screen.blit(Draw,(0,0))
+		pg.display.update()
+		board_mesh,turn=res_Or_quit(restart)
+		pg.display.update()
