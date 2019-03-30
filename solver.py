@@ -1,5 +1,7 @@
 import numpy as np
+import copy
 countr = 0
+depth_global = 0
 columnOrder = np.array([4, 5, 3, 6, 2, 1, 7])
 moves = np.zeros(7, float);
 class solver:
@@ -138,13 +140,14 @@ class solver:
                 parent[self.get_position_on_board(i, parent), i] = turn
                 child = parent
                 if self.can_win(child, turn):
-                    print("%%%%%%%%%%%%%%%%%%%%%%%%%")
-                    print("depth is "+str(depth))
-                    print("%%%%%%%%%%%%%%%%%%%%%%%%%")
-                    print(str(turn)+" has won the game")
-                    self.visualize(child);
-                    print()
-                    if depth == 7:
+                    # print("%%%%%%%%%%%%%%%%%%%%%%%%%")
+                    # print("depth is "+str(depth))
+                    # print("%%%%%%%%%%%%%%%%%%%%%%%%%")
+                    # print(str(turn)+" has won the game")
+                    # self.visualize(child);
+                    # print()
+                    # print(depth_global)
+                    if depth == depth_global:
                         moves[i] = self.eval_function(child);
                     return self.eval_function(child)
 
@@ -157,23 +160,23 @@ class solver:
         for j in range(7):
             i = columnOrder[j] - 1;
             if self.is_viable_action(i, node):
-                print("%%%%%%%%%%%%%%%%%%%%%%%%%")
-                print("depth is "+str(depth))
-                print("%%%%%%%%%%%%%%%%%%%%%%%%%")
+                # print("%%%%%%%%%%%%%%%%%%%%%%%%%")
+                # print("depth is "+str(depth))
+                # print("%%%%%%%%%%%%%%%%%%%%%%%%%")
                 parent = np.copy(node)
                 parent[self.get_position_on_board(i, parent), i] = turn
                 child = np.copy(parent)
-                self.visualize(child)
-                print()
+                # self.visualize(child)
+                # print()
                 score = -self.Negamax_wab(child, nexturn, depth - 1, -beta, -alpha);
-                if depth == 7:
+                if depth == depth_global:
                     moves[i] = score;
                 if score >= beta:
                     return score
                 if score > alpha:
                     alpha = score
             else:
-                if depth == 7:
+                if depth == depth_global:
                     moves[i] = -100;
         return alpha
 
@@ -182,12 +185,26 @@ class solver:
         self.board_mesh = board_mesh
         self.turn = turn
         self.depth = depth
-        print(self.Negamax(board_mesh, turn, depth))
-        print("HIIII")
-        print("Negamax: "+str(countr))
+        global depth_global
+        depth_global = copy.copy(depth)
+        # print(self.Negamax(board_mesh, turn, depth))
+        # print("HIIII")
+        # print("Negamax: "+str(countr))
         countr = 0
+        print(depth_global)
+        print("this is it")
         print(self.Negamax_wab(board_mesh, turn, depth, -12, 12))
         print("Negamax w alpha beta pruning: "+str(countr))
         print(moves)
-        best_move = np.argmax(moves) + 1
-        print(best_move)
+        maxim = np.max(moves)
+        truth_vector = (moves == maxim)
+        print(truth_vector)
+        for j in range(7):
+            i = columnOrder[j] - 1
+            if (truth_vector[i] == True):
+                best_move = i + 1
+                break
+        # print(maxim)
+        # best_move = np.argmax(moves) + 1
+        print("best move is : " ,best_move)
+        return best_move 

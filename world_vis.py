@@ -6,6 +6,8 @@ import os
 import math
 import Greedy
 import time
+from solver import solver
+slvr = solver()
 def initialize():
 	board_mesh = np.zeros((6, 7), int)
 	return board_mesh
@@ -33,7 +35,7 @@ text_player1 = font.render("Player 1",False,(0,0,0))
 text_player2 = font.render("Player 2",False,(0,0,0))
 ###########################
 player1_mode = "manual"
-player2_mode = "greedy"
+player2_mode = "solver"
 ############
 
 def board_UI(board_mesh):
@@ -234,11 +236,16 @@ while live:
 		elif player1_mode =="greedy":
 			move_j,turn = Greedy.greedy_search(board_mesh,turn%2,get_position_on_board,Greedy.greedy_score,is_viable_action)
 			#time.sleep(1)
+		elif player1_mode =="solver" :	
+			move_j = slvr.solve(board_mesh, 1, 10) -1
+			turn = turn%2 +1
+
+		
 		move_i = get_position_on_board(move_j, board_mesh)
 		if is_viable_action(move_j, board_mesh):
 			board_mesh[move_i, move_j] = turn%2 + 1
 			board_UI(board_mesh)
-			pgs.display.update()
+			pg.display.update()
 			Screen.blit(piece2,(646,450))
 			Screen.blit(place_holder,(620,403))
 			Screen.blit(text_player2,(646,410))		
@@ -267,6 +274,11 @@ while live:
 		elif player2_mode =="greedy":
 			move_j,turn = Greedy.greedy_search(board_mesh,turn%2,get_position_on_board,Greedy.greedy_score,is_viable_action)
 			#time.sleep(1)
+
+		elif player2_mode =="solver" :	
+			move_j = slvr.solve(board_mesh, 2, 10) -1
+			turn = turn%2 +1
+
 		move_i = get_position_on_board(move_j, board_mesh)
 		if is_viable_action(move_j, board_mesh):
 			board_mesh[move_i, move_j] = turn%2 +1

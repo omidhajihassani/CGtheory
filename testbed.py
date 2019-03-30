@@ -68,30 +68,30 @@ def visualize(board_mesh):
 		i = i - 1;
 		j = 0;
 
-board_mesh = np.zeros((6,7), int)
+# board_mesh = np.zeros((6,7), int)
 
-# board_mesh = np.array([[1, 1, 1, 2, 2, 0, 0],
-#                 [1, 1, 0, 0, 0, 0, 0],
-#                 [1, 0, 0, 0, 0, 0, 0],
-#                 [0, 0, 0, 0, 0, 0, 0],
-#                 [0, 0, 0, 0, 0, 0, 0],
-#                 [0, 0, 0, 0, 0, 0, 0]])
-board_mesh = state2mesh();
-for i in range(6):
-    for j in range(7):
-        if board_mesh[i, j] == 0:
-            break
-        if board_mesh[i, j] == 1:
-            board_mesh[i, j] = 2
-        else:
-            board_mesh[i, j] = 1
+board_mesh = np.array([[0, 0, 1, 2, 2, 0, 1],
+                [0, 0, 1, 1, 0, 0, 0],
+                [0, 0, 1, 2, 0, 0, 0],
+                [0, 0, 0, 2, 0, 0, 0],
+                [0, 0, 0, 1, 0, 0, 0],
+                [0, 0, 0, 2, 0, 0, 0]])
+# board_mesh = state2mesh();
+# for i in range(6):
+#     for j in range(7):
+#         if board_mesh[i, j] == 0:
+#             break
+#         if board_mesh[i, j] == 1:
+#             board_mesh[i, j] = 2
+#         else:
+#             board_mesh[i, j] = 1
 
 
 visualize(board_mesh)
 # board_mesh[1, 6] = 0
 # board_mesh[2, 5] = 1
 # board_mesh[2, 4] = 1
-board_mesh[5, 5] = 2
+#board_mesh[5, 5] = 2
 
 print("")
 # board_mesh = np.zeros((6, 7), int)
@@ -102,6 +102,6 @@ visualize(board_mesh)
 # print("")
 print(start)
 slvr = solver()
-slvr.solve(board_mesh, 1, 7)
+slvr.solve(board_mesh, 2, 10)
 end = time.time()
-print(end - start)
+print("execution time is : ",end - start)
