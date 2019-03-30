@@ -32,8 +32,8 @@ font=pg.font.SysFont('Helvetica',30)
 text_player1 = font.render("Player 1",False,(0,0,0))
 text_player2 = font.render("Player 2",False,(0,0,0))
 ###########################
-player1_mode = "greedy"
-player2_mode = "manual"
+player1_mode = "manual"
+player2_mode = "greedy"
 ############
 
 def board_UI(board_mesh):
@@ -219,8 +219,8 @@ while live:
 			while player :
 				for event in pg.event.get():
 					if event.type == pg.QUIT:
-						sys.exit()
-				#os._exit(0)
+						#sys.exit()
+						os._exit(0)
 					if event.type == pg.MOUSEBUTTONDOWN:
 						if event.pos[0] < 500 :
 							print("Turn is : ",turn)
@@ -238,7 +238,7 @@ while live:
 		if is_viable_action(move_j, board_mesh):
 			board_mesh[move_i, move_j] = turn%2 + 1
 			board_UI(board_mesh)
-			pg.display.update()
+			pgs.display.update()
 			Screen.blit(piece2,(646,450))
 			Screen.blit(place_holder,(620,403))
 			Screen.blit(text_player2,(646,410))		
@@ -252,7 +252,8 @@ while live:
 			while player :
 				for event in pg.event.get():
 					if event.type == pg.QUIT:
-						sys.exit()
+						os._exit(0)
+						#sys.exit()
 					if event.type == pg.MOUSEBUTTONDOWN:
 						if event.pos[0] < 500 :
 							print("Turn is : ",turn)

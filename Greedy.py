@@ -100,7 +100,8 @@ def greedy_search(board_mesh,player_number,get_position_on_board,greedy_score,is
     elif player_number==0 : player_number = 2
     column_score_player = [0,0,0,0,0,0,0]
     column_score_other = [0,0,0,0,0,0,0]
-   
+    player_score_raw = greedy_score(board_mesh,player_number)
+    other_score_raw = greedy_score(board_mesh,player_number%2+1)
     board_mesh_new = board_mesh
     for i in range(0,7):
         board_mesh_new = np.zeros((6,7))
@@ -108,17 +109,17 @@ def greedy_search(board_mesh,player_number,get_position_on_board,greedy_score,is
         move_row = get_position_on_board(i,board_mesh)
         if is_viable_action(i,board_mesh_new) :
             board_mesh_new[move_row][i]=player_number
-            print("Number of Stones for Column ( %c )",i)
+            print("Number of Stones for Column ( %s )" %i)
             score= greedy_score(board_mesh_new,player_number)
             board_mesh_new[move_row][i]=0
-            column_score_player[i]=score
+            column_score_player[i]=score - player_score_raw 
             turn=player_number%2+1
 
         else:
             #board_mesh_new[move_row][i]=player_number
             score= greedy_score(board_mesh_new,player_number)
             #board_mesh_new[move_row][i]=0
-            column_score_player[i]=score
+            column_score_player[i]=score - player_score_raw
 
 
     for i in range(0,7):
@@ -127,17 +128,17 @@ def greedy_search(board_mesh,player_number,get_position_on_board,greedy_score,is
         move_row = get_position_on_board(i,board_mesh)
         if is_viable_action(i,board_mesh_new) :
             board_mesh_new[move_row][i]=player_number%2+1
-            print("Number of Stones for Column ( %c )",i)
+            print("Number of Stones for Column ( %s )"%i)
             score= greedy_score(board_mesh_new,player_number%2+1)
             board_mesh_new[move_row][i]=0
-            column_score_other[i]=score
+            column_score_other[i]=score - other_score_raw
             turn=player_number%2+1
 
         else:
             #board_mesh_new[move_row][i]=player_number
             score= greedy_score(board_mesh_new,player_number%2+1)
             #board_mesh_new[move_row][i]=0
-            column_score_other[i]=score
+            column_score_other[i]=score - other_score_raw
     #print(board_mesh)
     print(column_score_player)
     print(column_score_other)
@@ -149,14 +150,14 @@ def greedy_search(board_mesh,player_number,get_position_on_board,greedy_score,is
     return Greedy_index,turn
 
 # A= np.zeros((6,7))
-# A[0][0]=0
+# A[0][0]=1
 # A[1][0]=0
 # A[2][0]=0
 # A[3][0]=0
 # A[4][0]=0
 # A[5][0]=0
 
-# A[0][1]=0
+# A[0][1]=1
 # A[0][2]=0
 # A[0][3]=0
 # Score = greedy_score(A,1)
