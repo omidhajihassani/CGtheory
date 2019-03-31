@@ -41,7 +41,9 @@ text_player2 = font.render("Player 2",False,(0,0,0))
 ###########################
 player1_mode = "manual"
 player2_mode = "manual"
-############
+############ Depth of Solver
+solver_depth = 10
+#################
 
 def board_UI(board_mesh):
 	# for c in range(7):
@@ -323,7 +325,7 @@ while live:
 			move_j,turn = Greedy.greedy_search(board_mesh,turn%2,get_position_on_board,Greedy.greedy_score,is_viable_action)
 			#time.sleep(1)
 		elif player1_mode =="solver" :	
-			move_j = slvr.solve(board_mesh, 1, 10) -1
+			move_j = slvr.solve(board_mesh, 1, solver_depth) -1
 			if is_viable_action(move_j,board_mesh) :
 				turn = turn%2 +1
 			else : 
@@ -367,7 +369,7 @@ while live:
 			#time.sleep(1)
 
 		elif player2_mode =="solver" :	
-			move_j = slvr.solve(board_mesh, 2, 10) -1
+			move_j = slvr.solve(board_mesh, 2, solver_depth) -1
 			if is_viable_action(move_j,board_mesh) :
 				turn = turn%2 +1
 			else: 

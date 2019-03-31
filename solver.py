@@ -65,7 +65,7 @@ class solver:
 
     def get_position_on_board(self, move_j, board_mesh):
     	move_i = 0;
-    	for i in range(7):
+    	for i in range(6):
     		if (board_mesh[i, move_j] == 0):
     			move_i = i
     			break
