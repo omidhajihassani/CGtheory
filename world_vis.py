@@ -148,7 +148,7 @@ def get_position_on_board(move_j, board_mesh):
 			break
 	return move_i
 
-def res_Or_quit(restart):
+def res_Or_quit(restart,board_mesh):
 	while not restart:
 		for event in pg.event.get():
 			if event.type == pg.QUIT:
@@ -209,8 +209,8 @@ while live:
 				live = False
 				pg.display.quit()
 				pg.quit()
-				sys.exit()
-				#os._exit
+				#sys.exit()
+				os._exit(0)
 			if event.type == pg.MOUSEBUTTONDOWN : 
 				if ((event.pos[0]>=80 and event.pos[0]<=80+260) and ( event.pos[1]>=280 and event.pos[1]<=330)):
 					player1_mode = "manual"
@@ -274,11 +274,22 @@ while live:
 		Screen.blit(piece1,(646,450))
 		Screen.blit(place_holder,(620,403))
 		Screen.blit(text_player1,(646,410))
+		Screen.blit(back,(700,10))
 		turn = 1
 		pg.display.update()
 
 	for event in pg.event.get():
-		if event.type == pg.QUIT:
+		if event.type == pg.MOUSEBUTTONDOWN:
+			if ((event.pos[0]>=700 and event.pos[0]<=800) and ( event.pos[1]>=0 and event.pos[1]<=100)):
+				restart = True
+				board_mesh = initialize()
+				# global welcome
+				# global once
+				welcome = True
+				once = True
+				turn = -1
+				pg.display.flip()
+		elif event.type == pg.QUIT:
 			live = False
 			pg.display.quit()
 			pg.quit()
@@ -310,11 +321,22 @@ while live:
 						#sys.exit()
 						os._exit(0)
 					if event.type == pg.MOUSEBUTTONDOWN:
+						if ((event.pos[0]>=700 and event.pos[0]<=800) and ( event.pos[1]>=0 and event.pos[1]<=100)):
+							restart = True
+							board_mesh = initialize()
+							# global welcome
+							# global once
+							welcome = True
+							once = True
+							turn = -1
+							pg.display.flip()
+							player = False
 						if event.pos[0] < 500 :
 							print("Turn is : ",turn)
 							X_position = event.pos[0]
 							move_j,turn= get_action(turn%2, board_mesh,X_position)
 							player = False
+						
 						else : 
 							pass
 			player = True
@@ -339,7 +361,8 @@ while live:
 			pg.display.update()
 			Screen.blit(piece2,(646,450))
 			Screen.blit(place_holder,(620,403))
-			Screen.blit(text_player2,(646,410))		
+			Screen.blit(text_player2,(646,410))
+			Screen.blit(back,(700,10))
 			pg.display.flip()
 			visualize(board_mesh)
 
@@ -353,6 +376,16 @@ while live:
 						os._exit(0)
 						#sys.exit()
 					if event.type == pg.MOUSEBUTTONDOWN:
+						if ((event.pos[0]>=700 and event.pos[0]<=800) and ( event.pos[1]>=0 and event.pos[1]<=100)):
+							restart = True
+							board_mesh = initialize()
+							# global welcome
+							# global once
+							welcome = True
+							once = True
+							turn = -1
+							pg.display.flip()
+							player = False
 						if event.pos[0] < 500 :
 							print("Turn is : ",turn)
 							X_position = event.pos[0]
@@ -383,6 +416,7 @@ while live:
 			Screen.blit(piece1,(646,450))
 			Screen.blit(place_holder,(620,403))
 			Screen.blit(text_player1,(646,410))	
+			Screen.blit(back,(700,10))
 			board_UI(board_mesh)
 			pg.display.update()
 			pg.display.flip()
@@ -392,7 +426,9 @@ while live:
 
 	else :
 		board_UI(board_mesh)
+		Screen.blit(back,(700,10))
 		pg.display.flip()
+	Screen.blit(back,(700,10))
 	pg.display.flip()
 	if winning_Condition(board_mesh,1):
 		turn = -2
@@ -408,7 +444,7 @@ while live:
 		Screen.blit(back,(700,10))
 		pg.display.update()
 		#live = False
-		board_mesh,turn=res_Or_quit(restart)	
+		board_mesh,turn=res_Or_quit(restart,board_mesh)	
 	if winning_Condition(board_mesh,2):
 		turn = -2
 		board_UI(board_mesh)
@@ -423,7 +459,7 @@ while live:
 		Screen.blit(Player2Wins,(0,0))
 		Screen.blit(back,(700,10))
 		pg.display.update()
-		board_mesh,turn=res_Or_quit(restart)
+		board_mesh,turn=res_Or_quit(restart,board_mesh)
 
 	#turn = turn + 1;
 	
@@ -434,5 +470,5 @@ while live:
 		Screen.blit(Draw,(0,0))
 		Screen.blit(back,(700,10))
 		pg.display.update()
-		board_mesh,turn=res_Or_quit(restart)
+		board_mesh,turn=res_Or_quit(restart,board_mesh)
 		pg.display.update()
