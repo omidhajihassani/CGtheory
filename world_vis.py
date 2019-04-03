@@ -342,9 +342,11 @@ while live:
 			player = True
 		elif player1_mode =="random":
 			move_j,turn= Random_Action(turn%2,board_mesh)
+			time.sleep(0.5)
 			#time.sleep(1)
 		elif player1_mode =="greedy":
 			move_j,turn = Greedy.greedy_search(board_mesh,turn%2,get_position_on_board,Greedy.greedy_score,is_viable_action)
+			time.sleep(0.5)
 			#time.sleep(1)
 		elif player1_mode =="solver" :	
 			move_j = slvr.solve(board_mesh, 1, solver_depth) -1
@@ -396,9 +398,11 @@ while live:
 			player = True
 		elif player2_mode =="random":
 			move_j,turn= Random_Action(turn%2,board_mesh)
+			time.sleep(0.5)
 			#time.sleep(1)
 		elif player2_mode =="greedy":
 			move_j,turn = Greedy.greedy_search(board_mesh,turn%2,get_position_on_board,Greedy.greedy_score,is_viable_action)
+			time.sleep(0.5)
 			#time.sleep(1)
 
 		elif player2_mode =="solver" :	

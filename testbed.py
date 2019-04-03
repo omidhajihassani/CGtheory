@@ -70,12 +70,12 @@ def visualize(board_mesh):
 
 # board_mesh = np.zeros((6,7), int)
 
-board_mesh = np.array([[0, 0, 1, 2, 2, 0, 1],
-                [0, 0, 1, 1, 0, 0, 0],
-                [0, 0, 1, 2, 0, 0, 0],
-                [0, 0, 0, 2, 0, 0, 0],
-                [0, 0, 0, 1, 0, 0, 0],
-                [0, 0, 0, 2, 0, 0, 0]])
+board_mesh = np.array([[0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0]])
 # board_mesh = state2mesh();
 # for i in range(6):
 #     for j in range(7):
@@ -102,6 +102,6 @@ visualize(board_mesh)
 # print("")
 print(start)
 slvr = solver()
-slvr.solve(board_mesh, 2, 10)
+slvr.solve(board_mesh, 2, 7)
 end = time.time()
 print("execution time is : ",end - start)

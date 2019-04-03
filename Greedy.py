@@ -151,15 +151,22 @@ def greedy_search(board_mesh,player_number,get_position_on_board,greedy_score,is
 
 # A= np.zeros((6,7))
 # A[0][0]=1
-# A[1][0]=0
-# A[2][0]=0
-# A[3][0]=0
-# A[4][0]=0
-# A[5][0]=0
+# A[0][1]=2
+# A[0][2]=2
+# A[1][2]=2
+# A[2][2]=2
+# A[2][3]=1
+# A[3][2]=1
+# A[0][3]=1
+# A[1][3]=1
+# A[2][3]=1
+# A[0][4]=2
+# A[1][4]=1
+# A[0][5]=0
 
-# A[0][1]=1
-# A[0][2]=0
-# A[0][3]=0
+# # A[0][1]=1
+# # A[0][2]=0
+# # A[0][3]=0
 # Score = greedy_score(A,1)
-# print("Score is : " ,Score)
+# print("Where To Play : " ,Score)
 # greedy_search(A,1,get_position_on_board,greedy_score,is_viable_action)
