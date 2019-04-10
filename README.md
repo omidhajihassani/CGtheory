@@ -1,4 +1,4 @@
-# README project Combinatorial Game Theory
+# README Combinatorial Game Theory Project ( Connect Four )
 This project is the Implementation of GUI, Player and NegaMaxSolver for the Connect-4 Game.
 Any harm is credited to the user not the creators
 
@@ -51,3 +51,5 @@ In this game we have 4 kinds of players :
 4- Negamax Player ( depth = 10 ) .  
 The players are shown in the following picture. 
 ![alt text](https://github.com/omidhajihassani/Connect-Four-Player-Solver-GUI/blob/master/Photos/Mode.png)
+
+April 2019
