@@ -15,8 +15,8 @@ To run the solver use "solver.py" or you can use "testbed.py" for directly solvi
 Note that. 
 
 ```
-First Player move == 1
-Second Player move == 2
+First Player move number (Red DISK )   == 1
+Second Player move number(Yellow DISK) == 2
 Empty == 0
 
 ```
@@ -44,10 +44,10 @@ This module is to test the solver. just change the board_mesh and depth variable
 
 Picture Below Represents the Gameplay. 
 ![alt text](https://github.com/omidhajihassani/Connect-Four-Player-Solver-GUI/blob/master/Photos/Game.png)
-In this game we have 4 kinds of players : 
-1- Manual Player
-2- Random Player
-3- Greedy Player
-4- Negamax Player ( depth = 10 )
+In this game we have 4 kinds of players :   
+1- Manual Player .  
+2- Random Player .  
+3- Greedy Player .  
+4- Negamax Player ( depth = 10 ) .  
 The players are shown in the following picture. 
 ![alt text](https://github.com/omidhajihassani/Connect-Four-Player-Solver-GUI/blob/master/Photos/Mode.png)
