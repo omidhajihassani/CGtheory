@@ -1,4 +1,4 @@
-# README Combinatorial Game Theory Project ( Connect Four )
+# README Combinatorial Game Theory Project
 This project is the Implementation of GUI, Player and NegaMaxSolver for the Connect-4 Game.
 Any harm is credited to the user not the creators
 
