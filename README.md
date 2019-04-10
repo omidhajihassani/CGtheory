@@ -37,6 +37,9 @@ or you can use "testbed.py". and just change the board_mesh and depth variable a
 ## testbed.py 
 This module is to test the solver. just change the board_mesh and depth variable and player to evaluate number.Remember that it takes a lot of time as the depth increases. 
 
+## Built With
+* [pygame](https://www.pygame.org/wiki/about) - Library is used to develope the GUI.
+
 ## Game ScreenShots
 
 Picture Below Represents the Gameplay. 
@@ -48,5 +51,3 @@ In this game we have 4 kinds of players :
 4- Negamax Player ( depth = 10 )
 The players are shown in the following picture. 
 ![alt text](https://github.com/omidhajihassani/Connect-Four-Player-Solver-GUI/blob/master/Photos/Mode.png)
-
-* pygame Library is used to develope the GUI. 
