@@ -4,28 +4,35 @@ Any harm is credited to the user not the creators
 
 ## Prerequisites
 You have to install pygame library First to install pygame use the following command : 
-
+```
 python3 -m pip install -U pygame --user
+
+```
 
 ## Running The code 
 You have to Run the "world_vis.py" to Play the game.
 To run the solver use "solver.py" or you can use "testbed.py" for directly solving your game position. 
 Note that. 
+
+```
 First Player move == 1
 Second Player move == 2
 Empty == 0
 
+```
 ## world_vis.py
 This python module handles the visualization of the Connect-4 game and also Player implementation. You should run this python program to play the game. 
 note that you can change the depth of the Negamax player by changing the "solver_depth" variable. 
 
 ## Solver.py
 This python module is used to solve the game positions. to use this you should first create a solver class. and then use the function to solve the board position. For Example : 
-################
+
+```
 slvr = solver()
 slvr.solve(board_mesh, 2, 7)
 end = time.time()
-################
+
+```
 or you can use "testbed.py". and just change the board_mesh and depth variable and player to evaluate number. 
 ## testbed.py 
 This module is to test the solver. just change the board_mesh and depth variable and player to evaluate number.Remember that it takes a lot of time as the depth increases. 
